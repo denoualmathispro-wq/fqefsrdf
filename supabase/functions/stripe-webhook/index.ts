@@ -2,9 +2,9 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.4";
 
 const PRICE_TO_PLAN: Record<string, string> = {
-  price_1UCnqZB8e0Rwsso5p3SBCC4A: "starter",
-  price_1UCnqxB8e0Rwsso5c9NhRbK1: "pro",
-  price_1UCnrBB8e0Rwsso5wxwVmQg2: "elite",
+  price_1UCpk3FUXNO5YPeNVhAW8DAl: "starter",
+  price_1UCpkQFUXNO5YPeNTpUgOYbY: "pro",
+  price_1UCpkIFUXNO5YPeN70ZIrp39: "elite",
 };
 
 function bytesToHex(bytes: ArrayBuffer) {
