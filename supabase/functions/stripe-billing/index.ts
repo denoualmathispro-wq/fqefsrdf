@@ -2,9 +2,9 @@ import "jsr:@supabase/functions-js/edge-runtime.d.ts";
 import { createClient } from "npm:@supabase/supabase-js@2.57.4";
 
 const PRICES: Record<string, string> = {
-  starter: "price_1UCnqZB8e0Rwsso5p3SBCC4A",
-  pro: "price_1UCnqxB8e0Rwsso5c9NhRbK1",
-  elite: "price_1UCnrBB8e0Rwsso5wxwVmQg2",
+  starter: "price_1UCpk3FUXNO5YPeNVhAW8DAl",
+  pro: "price_1UCpkQFUXNO5YPeNTpUgOYbY",
+  elite: "price_1UCpkIFUXNO5YPeN70ZIrp39",
 };
 
 function cors(req: Request) {
