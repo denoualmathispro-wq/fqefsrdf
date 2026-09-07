@@ -37,3 +37,15 @@ test("renders the paid advanced dashboard from real account data", async () => {
   assert.match(app, /function refreshBillingAccess\(attempt=0\)/);
   assert.doesNotMatch(app, /Number\(x\.margin\|\|0\)/);
 });
+
+test("includes the authorized profitability radar flow", async () => {
+  const app = await readFile(new URL("../public/app.html", import.meta.url), "utf8");
+
+  assert.match(app, /Radar rentabilité/);
+  assert.match(app, /function renderRadar\(c\)/);
+  assert.match(app, /function saveOpportunity\(e\)/);
+  assert.match(app, /function importRadarCsv\(\)/);
+  assert.match(app, /function promoteOpportunity\(id\)/);
+  assert.match(app, /Sources autorisées uniquement/);
+  assert.doesNotMatch(app, /vinted.*password|password.*vinted/i);
+});
