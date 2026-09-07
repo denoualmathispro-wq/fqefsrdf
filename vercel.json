@@ -1,0 +1,15 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "installCommand": "echo 'Static ResellGO deployment'",
+  "buildCommand": "echo 'Serving verified public assets'",
+  "outputDirectory": "public",
+  "cleanUrls": false,
+  "redirects": [
+    {
+      "source": "/",
+      "destination": "/resellgo.html",
+      "permanent": false
+    }
+  ]
+}
