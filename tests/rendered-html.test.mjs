@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { readFile } from "node:fs/promises";
 import test from "node:test";
 
 test("redirects the root page to the ResellGO landing page", async () => {
@@ -23,4 +24,16 @@ test("redirects the root page to the ResellGO landing page", async () => {
 
   assert.equal(response.status, 307);
   assert.equal(response.headers.get("location"), "http://localhost/resellgo.html");
+});
+
+test("renders the paid advanced dashboard from real account data", async () => {
+  const app = await readFile(new URL("../public/app.html", import.meta.url), "utf8");
+
+  assert.match(app, /function paidAccess\(\)/);
+  assert.match(app, /function analysisMargin\(x\)/);
+  assert.match(app, /Performance nette sur 7 jours/);
+  assert.match(app, /Potentiel par catégorie/);
+  assert.match(app, /État du catalogue/);
+  assert.match(app, /function refreshBillingAccess\(attempt=0\)/);
+  assert.doesNotMatch(app, /Number\(x\.margin\|\|0\)/);
 });
