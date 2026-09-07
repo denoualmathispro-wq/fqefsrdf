@@ -5,6 +5,12 @@
   "buildCommand": "echo 'Serving verified public assets'",
   "outputDirectory": "public",
   "cleanUrls": false,
+  "headers": [
+    {
+      "source": "/app.html",
+      "headers": [{ "key": "Cache-Control", "value": "no-store, max-age=0" }]
+    }
+  ],
   "redirects": [
     {
       "source": "/",
