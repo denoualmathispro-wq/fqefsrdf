@@ -2,7 +2,7 @@ const $ = id => document.getElementById(id);
 function status(text, type = '') { const el = $('status'); el.textContent = text; el.className = `status ${type}`; }
 function mode(email) { $('login').classList.toggle('hide', !!email); $('scanner').classList.toggle('hide', !email); $('account').textContent = email ? `Connecté : ${email}` : ''; }
 
-chrome.runtime.sendMessage({ type: 'STATUS' }, response => mode(response?.email));
+chrome.runtime.sendMessage({ type: 'STATUS' }, response => { mode(response?.email); $('autoSync').checked=response?.autoSync!==false; $('multiplier').value=response?.multiplier||1.35; });
 $('connect').onclick = () => {
   status('Connexion…');
   chrome.runtime.sendMessage({ type: 'LOGIN', email: $('email').value.trim(), password: $('password').value }, response => {
@@ -11,6 +11,9 @@ $('connect').onclick = () => {
   });
 };
 $('logout').onclick = () => chrome.runtime.sendMessage({ type: 'LOGOUT' }, () => { mode(null); status('Déconnecté.'); });
+$('autoSync').onchange = saveSettings;
+$('multiplier').onchange = saveSettings;
+function saveSettings(){chrome.runtime.sendMessage({type:'SETTINGS',autoSync:$('autoSync').checked,multiplier:Number($('multiplier').value||1.35)},r=>status(r?.ok?'Réglages enregistrés.':'Réglages impossibles.',r?.ok?'ok':'err'))}
 $('scan').onclick = async () => {
   status('Lecture des annonces visibles…');
   const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
