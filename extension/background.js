@@ -15,7 +15,7 @@ async function signIn(email, password) {
   const session = await request('/auth/v1/token?grant_type=password', {
     method: 'POST', body: JSON.stringify({ email, password })
   });
-  await chrome.storage.local.set({ session });
+  await chrome.storage.local.set({ session, autoSync: true, multiplier: 1.35 });
   return session;
 }
 
@@ -65,9 +65,11 @@ chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   (async () => {
     if (message.type === 'LOGIN') return { ok: true, session: await signIn(message.email, message.password) };
     if (message.type === 'STATUS') {
-      const { session } = await chrome.storage.local.get('session');
-      return { ok: true, email: session?.user?.email || null };
+      const { session, autoSync = true, multiplier = 1.35 } = await chrome.storage.local.get(['session','autoSync','multiplier']);
+      return { ok: true, email: session?.user?.email || null, autoSync, multiplier };
     }
+    if (message.type === 'SETTINGS') { await chrome.storage.local.set({ autoSync: !!message.autoSync, multiplier: message.multiplier }); return { ok: true }; }
+    if (message.type === 'AUTO_SAVE') { const { autoSync = true, multiplier = 1.35 } = await chrome.storage.local.get(['autoSync','multiplier']); if (!autoSync) return { ok: true, skipped: true }; return { ok: true, rows: await saveListings(message.listings, multiplier) }; }
     if (message.type === 'LOGOUT') { await chrome.storage.local.remove('session'); return { ok: true }; }
     if (message.type === 'SAVE') return { ok: true, rows: await saveListings(message.listings, message.multiplier) };
     throw new Error('Action inconnue.');
