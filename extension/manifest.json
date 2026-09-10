@@ -1,0 +1,19 @@
+{
+  "manifest_version": 3,
+  "name": "ResellGO — Radar Vinted",
+  "version": "1.0.0",
+  "description": "Envoie vers ResellGO les annonces visibles sur la page Vinted ouverte.",
+  "permissions": ["activeTab", "storage"],
+  "host_permissions": [
+    "https://www.vinted.fr/*",
+    "https://www.vinted.com/*",
+    "https://uydivhuoajbnmjjfpeyg.supabase.co/*"
+  ],
+  "background": { "service_worker": "background.js" },
+  "action": { "default_popup": "popup.html", "default_title": "Scanner avec ResellGO" },
+  "content_scripts": [{
+    "matches": ["https://www.vinted.fr/*", "https://www.vinted.com/*"],
+    "js": ["content.js"],
+    "run_at": "document_idle"
+  }]
+}
