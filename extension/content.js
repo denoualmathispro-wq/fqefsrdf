@@ -30,3 +30,20 @@ function visibleListings() {
 chrome.runtime.onMessage.addListener((message, _sender, sendResponse) => {
   if (message.type === 'SCAN_PAGE') sendResponse({ listings: visibleListings(), page: location.href });
 });
+
+let lastFingerprint = '', lastSync = 0, timer;
+function scheduleAutoSync() {
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    const listings = visibleListings();
+    if (!listings.length || Date.now() - lastSync < 30000) return;
+    const fingerprint = listings.map(x => x.id + ':' + x.price).join('|');
+    if (fingerprint === lastFingerprint) return;
+    chrome.runtime.sendMessage({ type: 'AUTO_SAVE', listings }, response => {
+      if (chrome.runtime.lastError || !response?.ok || response.skipped) return;
+      lastFingerprint = fingerprint; lastSync = Date.now();
+    });
+  }, 2500);
+}
+new MutationObserver(scheduleAutoSync).observe(document.documentElement, { childList: true, subtree: true });
+scheduleAutoSync();
