@@ -9,6 +9,6 @@ Cette extension importe dans ResellGO les annonces déjà visibles sur une page 
 3. Cliquer **Charger l’extension non empaquetée**.
 4. Sélectionner le dossier `extension`.
 5. Ouvrir une recherche Vinted, cliquer l’icône ResellGO et se connecter avec le compte ResellGO.
-6. Cliquer **Scanner cette page** puis ouvrir le Radar ResellGO.
+6. Activer **Synchronisation automatique** ou cliquer **Scanner maintenant**, puis ouvrir le Radar ResellGO.
 
-Le scan est déclenché manuellement. L’extension ne lit ni identifiants ni cookies Vinted et ne contourne aucune protection technique.
+L’auto-sync met à jour les annonces visibles au maximum toutes les 30 secondes tant que l’onglet Vinted reste ouvert. L’extension ne lit ni identifiants ni cookies Vinted et ne contourne aucune protection technique.
