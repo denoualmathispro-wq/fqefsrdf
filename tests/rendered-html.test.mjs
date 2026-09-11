@@ -49,3 +49,19 @@ test("includes the authorized profitability radar flow", async () => {
   assert.match(app, /Sources autorisées uniquement/);
   assert.doesNotMatch(app, /vinted.*password|password.*vinted/i);
 });
+
+test("includes secure scheduled Vinted provider synchronization", async () => {
+  const app = await readFile(new URL("../public/app.html", import.meta.url), "utf8");
+  const edge = await readFile(new URL("../supabase/functions/market-sync/index.ts", import.meta.url), "utf8");
+  const migration = await readFile(new URL("../supabase/migrations/20260911015849_add_market_sync_automation.sql", import.meta.url), "utf8");
+
+  assert.match(app, /function saveSyncSource\(e\)/);
+  assert.match(app, /function runMarketSync\(sourceId\)/);
+  assert.match(app, /même lorsque ton navigateur est fermé/);
+  assert.match(edge, /Deno\.env\.get\("BRIGHTDATA_API_TOKEN"\)/);
+  assert.match(edge, /validate_market_sync_cron_token/);
+  assert.match(edge, /datasets\/v3\/snapshot/);
+  assert.match(migration, /cron\.schedule/);
+  assert.match(migration, /enable row level security/);
+  assert.doesNotMatch(app, /BRIGHTDATA_API_TOKEN\s*=/);
+});
